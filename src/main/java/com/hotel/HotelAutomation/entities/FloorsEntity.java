@@ -1,10 +1,11 @@
 package com.hotel.HotelAutomation.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FloorsEntity {
 
-  //private final int maxConsumption;
+  private int maxConsumption;
   
   private int floorNumber;
   private List<MainCorridorEntity> mainCorridors;
@@ -14,6 +15,7 @@ public class FloorsEntity {
   
   public FloorsEntity(int floorNumber) {
     this.floorNumber = floorNumber;
+    this.activeSubcoridorList = new ArrayList<Integer>();
   }
   
   public int getFloorNumber() {
@@ -47,18 +49,46 @@ public class FloorsEntity {
   }
   
   public void resetApplianceStatus(SensorInput sensorInput) {
-    int totalUnit = subCorridors.size() * 10;
+    currentConsumption = subCorridors.size() * 10;
     if (sensorInput.reset) {
-      
-    }// else {
-    /*subCorridors.forEach(
-        subCorridor -> {
-          if (movementNumber.contains(subCorridor.getCorridorNumber())) {
-            LightEntity l = new LightEntity(1, true);
-            subCorridor.setLightEntity(l);
-            //totalUnit = totalUnit - 5;
+      subCorridors.forEach(
+          subCorridor -> {
+            subCorridor.setLightEntity(new LightEntity(1, false));
+            subCorridor.setAcEntity(new AcEntity(1, true));
           }
-        });
-    }*/
+          );
+    } else {
+      for (SubCorridorEntity subCorridorEntity : subCorridors) {
+        if (sensorInput.getSensorDataCorridorNumber().contains(subCorridorEntity.getCorridorNumber())) {
+          if (currentConsumption - 15 > 0) {
+            subCorridorEntity.setLightEntity(new LightEntity(1, true));
+            subCorridorEntity.setAcEntity(new AcEntity(1, true));
+            currentConsumption = currentConsumption - 15;
+          } else if (currentConsumption - 5 > 0) {
+            subCorridorEntity.setLightEntity(new LightEntity(1, true));
+            subCorridorEntity.setAcEntity(new AcEntity(1, false));
+            currentConsumption = currentConsumption - 5;
+          }
+          activeSubcoridorList.add(subCorridorEntity.getCorridorNumber());
+        } else {
+          if (subCorridorEntity.getAcEntity().isAcStatus() && subCorridorEntity.getLightEntity().isLightStatus()) {
+            subCorridorEntity.setLightEntity(new LightEntity(1, false));
+            subCorridorEntity.setAcEntity(new AcEntity(1, false));
+            currentConsumption = currentConsumption + 15;
+          } else if (subCorridorEntity.getAcEntity().isAcStatus() && !subCorridorEntity.getLightEntity().isLightStatus()) {
+            subCorridorEntity.setLightEntity(new LightEntity(1, false));
+            subCorridorEntity.setAcEntity(new AcEntity(1, false));
+            currentConsumption = currentConsumption + 10;
+          } else {
+            subCorridorEntity.setLightEntity(new LightEntity(1, false));
+            subCorridorEntity.setAcEntity(new AcEntity(1, false));
+            currentConsumption = currentConsumption + 5;
+          }
+          if(activeSubcoridorList.contains(subCorridorEntity.getCorridorNumber())) {
+            activeSubcoridorList.remove(subCorridorEntity.getCorridorNumber());
+          }
+        }
+      }
+    }
   }
 }

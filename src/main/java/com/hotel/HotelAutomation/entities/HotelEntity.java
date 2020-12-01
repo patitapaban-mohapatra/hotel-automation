@@ -33,7 +33,11 @@ public class HotelEntity {
   
   public void setApplianceConsumption(List<SensorInput> sensorInputs) {
     sensorInputs.forEach(sensorInput -> {
-      //if ()
+      for (FloorsEntity floorsEntity : floors) {
+        if (sensorInput.getFloorNumber() == floorsEntity.getFloorNumber()) {
+          floorsEntity.resetApplianceStatus(sensorInput);
+        }
+      }
     });
   }
   

@@ -5,8 +5,14 @@ import java.util.List;
 public class SensorInput {
 
   int floorNumber;
-  List<SensorData> sensorData;
+  List<Integer> sensorDataCorridorNumber;
   boolean reset;
+  
+  public SensorInput(int floorNumber, List<Integer> sensorDataCorridorNumber, boolean reset) {
+    this.floorNumber = floorNumber;
+    this.sensorDataCorridorNumber = sensorDataCorridorNumber;
+    this.reset = reset;
+  }
 
   public int getFloorNumber() {
     return floorNumber;
@@ -16,12 +22,12 @@ public class SensorInput {
     this.floorNumber = floorNumber;
   }
 
-  public List<SensorData> getSensorData() {
-    return sensorData;
+  public List<Integer> getSensorDataCorridorNumber() {
+    return sensorDataCorridorNumber;
   }
 
-  public void setSensorData(List<SensorData> sensorData) {
-    this.sensorData = sensorData;
+  public void setSensorDataorridorNumber(List<Integer> sensorDataCorridorNumber) {
+    this.sensorDataCorridorNumber = sensorDataCorridorNumber;
   }
 
   public boolean isReset() {
@@ -30,23 +36,6 @@ public class SensorInput {
 
   public void setReset(boolean reset) {
     this.reset = reset;
-  }
-
-  class SensorData {
-    int corridorNumber;
-    boolean isMovement;
-    public int getCorridorNumber() {
-      return corridorNumber;
-    }
-    public void setCorridorNumber(int corridorNumber) {
-      this.corridorNumber = corridorNumber;
-    }
-    public boolean isMovement() {
-      return isMovement;
-    }
-    public void setMovement(boolean isMovement) {
-      this.isMovement = isMovement;
-    }
   }
   
 }
