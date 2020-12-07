@@ -2,12 +2,15 @@ package com.hotel.HotelAutomation.entities;
 
 import java.util.List;
 
+/*
+ * Contains the sensor input received from appliances
+ */
 public class SensorInput {
 
   int floorNumber;
   List<Integer> sensorDataCorridorNumber;
   boolean reset;
-  
+
   public SensorInput(int floorNumber, List<Integer> sensorDataCorridorNumber, boolean reset) {
     this.floorNumber = floorNumber;
     this.sensorDataCorridorNumber = sensorDataCorridorNumber;
@@ -37,6 +40,5 @@ public class SensorInput {
   public void setReset(boolean reset) {
     this.reset = reset;
   }
-  
-}
 
+}
